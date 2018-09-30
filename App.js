@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, Button, StyleSheet, Text, View } from 'react-native';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 export default class VeloLyonApp extends React.Component {
     constructor() {
@@ -23,11 +24,30 @@ export default class VeloLyonApp extends React.Component {
             .catch(error => console.log(error));
     }
 
+    componentWillMount(){
+        this.updateVeloData();
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <Text>Today total vélo in Lyon: { this.state.veloCount }</Text>
-                <Button title="Update!" onPress={this.updateVeloData}/>
+                <Text style={styles.basicText}>Today total bikes in Lyon:</Text>
+                <AnimatedCircularProgress
+                    style={styles.bikeCircle}
+                    size={160}
+                    width={10}
+                    fill={100}
+                    backgroundColor="#BFC0C0"
+                    tintColor="#3E7CB1"
+                    onAnimationComplete={() => console.log('onAnimationComplete')}>
+                    {
+                        () => (
+                            <Text style={[styles.basicText, styles.bikesNumber]}>
+                                { this.state.veloCount }
+                            </Text>
+                        )
+                    }
+                </AnimatedCircularProgress>
             </View>
         );
     }
@@ -36,8 +56,18 @@ export default class VeloLyonApp extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#80A1C1',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    bikeCircle: {
+        margin: 20
+    },
+    basicText: {
+        fontSize: 25,
+        color: '#D9F0FF'
+    },
+    bikesNumber: {
+        fontSize: 30
+    }
 });
